@@ -28,11 +28,9 @@ jobs:
 
       - name: Tag image
         run: |
-          docker tag node-mysql-app:latest \
-        ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazon.com/${{ secrets.ECR_REPOSITORY }}:latest
+          docker tag node-mysql-app:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazon.com/${{ secrets.ECR_REPOSITORY }}:latest
 
       - name: Push image to ECR
         run: | 
-          docker push \
-          ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
   
