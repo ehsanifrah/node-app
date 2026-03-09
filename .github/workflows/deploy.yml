@@ -22,15 +22,19 @@ jobs:
       - name: Login to ECR
         uses: aws-actions/amazon-ecr-login@v2
 
+      - name: Set ECR image URI
+        run: |
+          echo "ECR_URI=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}" >> $GITHUB_ENV
+
+
       - name: Build Docker image
         run: |
           docker build -t node-msql-app .
 
       - name: Tag image
         run: |
-          docker tag node-msql-app:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazon.com/${{ secrets.ECR_REPOSITORY }}:latest
+          docker tag node-msql-app:latest $ECR_URI:latest
 
       - name: Push image to ECR
         run: | 
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
-  
+          docker push $ECR_URI:latest
