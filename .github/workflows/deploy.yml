@@ -29,7 +29,7 @@ jobs:
       - name: Tag image
         run: |
           docker tag node-mysql-app:latest \
-        ${{ secretkey.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazon.com/${{ secrets.ECR_REPOSITORY }}:latest
+        ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazon.com/${{ secrets.ECR_REPOSITORY }}:latest
 
       - name: Push image to ECR
         run: | 
