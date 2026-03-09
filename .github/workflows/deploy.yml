@@ -1,0 +1,38 @@
+name: Build and Push to ECR
+on: 
+  push:
+    branches:
+      - main
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secretkey.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secretkey.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secretkey.AWS_REGION }}
+
+      - name: Login to ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build Docker image
+        run: |
+          docker build -t node-msql-app
+
+      - name: Tag image
+        run: |
+          docker tag node-mysql-app:latest \
+        ${{ secretkey.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secretkey.AWS_REGION }}.amazon.com/${{ secretkey.ECR_REPOSITORY }}:latest
+
+      - name: Push image to ECR
+        run: | 
+          docker push \
+          ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
+  
