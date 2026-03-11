@@ -3,7 +3,7 @@ version: "3.8"
 services:
 
   app:
-    build: .
+    build: 975049893953.dkr.ecr.eu-north-1.amazonaws.com/nodeapp
     ports:
       - "3000:3000"
     depends_on:

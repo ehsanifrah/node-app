@@ -38,3 +38,33 @@ jobs:
       - name: Push image to ECR
         run: | 
           docker push $ECR_URI:latest
+
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+
+          script: |
+            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} \
+            | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+
+            cd /home/ubuntu
+
+            if [ ! -d "node-app" ]; then
+                git clone https://github.com/ehsanifrah/node-app.git
+            fi
+            
+            cd node-app
+            git pull
+            
+            docker compose down
+            docker compose pull
+            docker compose up -d
