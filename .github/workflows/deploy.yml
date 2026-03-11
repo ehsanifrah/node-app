@@ -72,6 +72,6 @@ jobs:
                 sudo apt install -y docker-compose
             fi
             
-            docker compose down
-            docker compose pull
-            docker compose up -d --build
+            docker-compose down
+            docker-compose pull
+            docker-compose up -d --build
