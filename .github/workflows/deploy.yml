@@ -69,7 +69,7 @@ jobs:
             # if ! docker compose version >/dev/null 2>&1; then
             #     echo "Installing Docker Compose..."
             #     sudo apt update
-            #     sudo apt install -y docker-compose
+            #     sudo apt install -y docker-composepull
             # fi
             
             export IMAGE_TAG=${{ github.sha }}
