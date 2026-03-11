@@ -29,15 +29,15 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t node-msql-app .
+          docker build -t node-msql-app:${{ github.sha }} .
 
       - name: Tag image
         run: |
-          docker tag node-msql-app:latest $ECR_URI:test
+          docker tag node-msql-app:${{ github.sha }}  $ECR_URI:${{ github.sha }} 
 
       - name: Push image to ECR
         run: | 
-          docker push $ECR_URI:test
+          docker push $ECR_URI:${{ github.sha }} 
 
 
   deploy:
@@ -72,6 +72,8 @@ jobs:
             #     sudo apt install -y docker-compose
             # fi
             
+            export IMAGE_TAG=${{ github.sha }}
+
             docker-compose down
             docker-compose pull
             docker-compose up -d --build
