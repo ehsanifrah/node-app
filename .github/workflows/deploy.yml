@@ -64,7 +64,14 @@ jobs:
             
             cd node-app
             git pull
+
+            # Install Docker Compose if not installed
+            if ! docker compose version >/dev/null 2>&1; then
+                echo "Installing Docker Compose..."
+                sudo apt update
+                sudo apt install -y docker-compose-plugin
+            fi
             
             docker compose down
             docker compose pull
-            docker compose up -d
+            docker compose up -d --build
