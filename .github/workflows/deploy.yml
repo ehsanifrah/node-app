@@ -63,7 +63,9 @@ jobs:
             fi
             
             cd node-app
-            git pull
+            #git pull
+            git fetch origin
+            git reset --hard origin/main
 
             # Install Docker Compose if not installed
             # if ! docker compose version >/dev/null 2>&1; then
